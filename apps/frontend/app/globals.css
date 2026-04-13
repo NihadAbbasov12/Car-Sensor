@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-sand text-ink antialiased;
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+a {
+  @apply text-inherit no-underline;
+}
+
+input,
+select {
+  @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-200;
+}
+
+button {
+  @apply transition;
+}
