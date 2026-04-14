@@ -1,0 +1,37 @@
+name: Hourly Scrape
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate
+
+      - name: Run scraper
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SCRAPER_BASE_URL: https://www.carsensor.net/
+          SCRAPER_LIST_PATH: /usedcar/freeword/%E3%83%88%E3%83%A8%E3%82%BF/index.html
+          SCRAPER_MAX_LIST_PAGES: "2"
+          SCRAPER_MAX_CARS_PER_RUN: "20"
+          SCRAPER_TIMEOUT_MS: "60000"
+          SCRAPER_DELAY_MS: "1200"
+        run: npm run scrape
